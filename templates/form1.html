@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Search by Word{% endblock %}
+{% block content %}
+<div class="container-fluid">
+{% if form != Null %}
+    <div class="form-group">
+        <form action="/form1" method="POST">
+            {{ form.csrf_token() }}
+            {{ form.s.label }} {{ form.s }}<br/>
+            {{ form.submit }}
+        </form>
+    </div>
+{% endif %}
+{% if error %}
+    <b>{{ error }}</b>
+{% endif %}
+{% if data == 1 %}
+
+    <h3 class="display-4">Search Word: {{ search_word }}</h3><br/>
+    <h4 class="display-4">Search Text Files: {{ search_file }} <br/><br/>
+    Total No. of Files: {{ search_file_len }} <br/><br/>
+    Search File Line No.: {{ search_line_num }} <br/><br/>
+        Search Lines: {{ search_line }} <br/><br/>
+    Total No. of Lines: {{ search_line_num_len }} <br/><br/></h4>
+
+{% endif %}
+</div>
+{% endblock %}
