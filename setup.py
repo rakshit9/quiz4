@@ -4,7 +4,7 @@ with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
 setup(
-    name='package name',
-    version='version',
+    name='task_manager',
+    version='1.0.0',
     install_requires=requirements,
 )
