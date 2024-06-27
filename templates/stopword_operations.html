@@ -1,0 +1,28 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Stop Word Operations</h2>
+    <form method="POST">
+        <label for="stop_words">Stop Words P (up to 10, separated by spaces):</label>
+        <input type="text" id="stop_words" name="stop_words" required><br><br>
+        <label for="string_s">String S (characters):</label>
+        <input type="text" id="string_s" name="string_s" required><br><br>
+        <label for="text_t">Text T (enter text):</label>
+        <textarea id="text_t" name="text_t" rows="5" cols="30" required></textarea><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if removed_count is defined %}
+        <h3>Stop Words Removed: {{ removed_count }}</h3>
+        <h3>Resulting Text:</h3>
+        <p>{{ resulting_text }}</p>
+        <h3>Bi-grams:</h3>
+        <ul>
+            {% for bi_gram in bi_grams %}
+                <li>{{ bi_gram }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

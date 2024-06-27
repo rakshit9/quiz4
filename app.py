@@ -184,8 +184,43 @@ def word_operations():
                     starting_words[char].append(word)
 
         return render_template('word_operations.html', word_count=word_count, starting_words=starting_words)
-    
+
     return render_template('word_operations.html')
+
+
+@app.route('/stopword_operations', methods=['GET', 'POST'])
+def stopword_operations():
+    if request.method == 'POST':
+        p = request.form['stop_words'].split()  # Stop words list
+        s = request.form['string_s']            # String of characters
+        t = request.form['text_t']              # Input text
+
+        # Normalizing text and stop words to lower case for case insensitive comparison
+        normalized_text = t.lower()
+        stop_words_set = set(word.lower() for word in p)
+
+        # Remove stop words and count them
+        words = re.findall(r'\b\w+\b', normalized_text)
+        filtered_words = [word for word in words if word not in stop_words_set]
+        removed_count = len(words) - len(filtered_words)
+
+        # Rebuild the text without stop words
+        resulting_text = ' '.join(filtered_words)
+
+        # Finding bi-grams for words starting with any character in S
+        bi_grams = []
+        s_chars = set(s.lower())  # Consider lower case for matching
+        for i, word in enumerate(filtered_words):
+            if word[0] in s_chars:  # Check if the word starts with any character in S
+                if i > 0:  # Check for preceding word
+                    bi_grams.append(filtered_words[i-1] + ' ' + word)
+                if i < len(filtered_words) - 1:  # Check for following word
+                    bi_grams.append(word + ' ' + filtered_words[i+1])
+
+        return render_template('stopword_operations.html', removed_count=removed_count,
+                               resulting_text=resulting_text, bi_grams=bi_grams)
+
+    return render_template('stopword_operations.html')
 
 
 if __name__ == '__main__':
