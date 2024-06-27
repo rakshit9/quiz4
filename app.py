@@ -19,6 +19,7 @@ porter = PorterStemmer()
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'SecureSecretKey'
 app.config['UPLOAD_FOLDER'] = 'static'
 app.config['UPDATED_FILES'] = 'static/updated_data'
 app.config['ALLOWED_EXTENSIONS'] = {'txt'}
