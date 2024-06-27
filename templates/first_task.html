@@ -1,0 +1,29 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+    <h1>Character Processing Form</h1>
+    <form action="/first_task" method="post">
+        <label for="s">Enter String S (1-10 characters):</label>
+        <input type="text" id="s" name="s" required><br><br>
+        
+        <label for="t">Enter Text T:</label>
+        <textarea id="t" name="t" rows="4" cols="50" required></textarea><br><br>
+        
+        <label for="c">Enter Character C to replace with:</label>
+        <input type="text" id="c" name="c" required><br><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+    {% if character_count %}
+        <h2>Character Counts</h2>
+        <p>{{ character_count }}</p>
+        <h2>Frequencies</h2>
+        <p>{{ frequency }}</p>
+        <h2>Replaced Text</h2>
+        <p>{{ replaced_text }}</p>
+    {% endif %}
+
+
+{% endblock %}

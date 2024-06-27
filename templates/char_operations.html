@@ -1,0 +1,26 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Character Operations</h2>
+    <form method="POST">
+        <label for="string_s">String S (1-10 characters):</label>
+        <input type="text" id="string_s" name="string_s" required><br><br>
+        <label for="char_c">Replacement Character C:</label>
+        <input type="text" id="char_c" name="char_c" required><br><br>
+        <label for="text_t">Text T:</label>
+        <textarea id="text_t" name="text_t" rows="5" cols="30" required></textarea><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if character_count %}
+        <h3>Character Counts:</h3>
+        <p>{{ character_count }}</p>
+        <h3>Frequencies:</h3>
+        <p>{{ frequency }}</p>
+        <h3>Replaced Text:</h3>
+        <p>{{ replaced_text }}</p>
+    {% endif %}
+</div>
+
+{% endblock %}

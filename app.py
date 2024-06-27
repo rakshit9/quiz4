@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, request
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField
 from wtforms.validators import InputRequired
@@ -12,6 +12,9 @@ import nltk
 import codecs
 from collections import defaultdict
 from time import time
+from collections import Counter
+
+app = Flask(__name__)
 
 
 nltk.download(['punkt', 'stopwords'])
@@ -133,6 +136,31 @@ def search():
     elapsed_time = time() - start_time
     return render_template('search.html', form=form, results=results, elapsed_time=elapsed_time)
 
+
+@app.route('/char_operations', methods=['GET', 'POST'])
+def char_operations():
+    if request.method == 'POST':
+        s = request.form['string_s']
+        c = request.form['char_c']
+        t = request.form['text_t']
+
+        # Ensure that `s` is between 1 to 10 characters and `c` is exactly 1 character
+        if not (1 <= len(s) <= 10 and len(c) == 1):
+            return render_template('char_operations.html', error="Ensure 'S' is 1-10 characters long and 'C' is a single character.")
+
+        # Character counting and frequency calculation
+        counts = Counter(t)
+        character_count = {char: counts[char] for char in s}
+        total_chars = sum(counts.values())
+        frequency = {char: (counts[char] / total_chars) for char in s if total_chars > 0}
+
+        # Replacement operation
+        replaced_text = ''.join([c if char in s else char for char in t])
+
+        return render_template('char_operations.html', character_count=character_count, frequency=frequency, replaced_text=replaced_text)
+    
+    else:  # This else part ensures that there's always a return for GET requests
+        return render_template('char_operations.html')
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
