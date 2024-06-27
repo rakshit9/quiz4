@@ -207,21 +207,22 @@ def stopword_operations():
         # Rebuild the text without stop words
         resulting_text = ' '.join(filtered_words)
 
-        # Finding bi-grams for words starting with any character in S
-        bi_grams = []
+        # Finding unique bi-grams for words starting with any character in S
+        bi_grams_set = set()
         s_chars = set(s.lower())  # Consider lower case for matching
         for i, word in enumerate(filtered_words):
             if word[0] in s_chars:  # Check if the word starts with any character in S
-                if i > 0:  # Check for preceding word
-                    bi_grams.append(filtered_words[i-1] + ' ' + word)
-                if i < len(filtered_words) - 1:  # Check for following word
-                    bi_grams.append(word + ' ' + filtered_words[i+1])
+                if i > 0:  # Add preceding word bi-gram
+                    bi_grams_set.add(filtered_words[i-1] + ' ' + word)
+                if i < len(filtered_words) - 1:  # Add following word bi-gram
+                    bi_grams_set.add(word + ' ' + filtered_words[i+1])
+
+        bi_grams = list(bi_grams_set)  # Convert set back to list for rendering
 
         return render_template('stopword_operations.html', removed_count=removed_count,
                                resulting_text=resulting_text, bi_grams=bi_grams)
 
     return render_template('stopword_operations.html')
-
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
