@@ -13,6 +13,8 @@ import codecs
 from collections import defaultdict
 from time import time
 from collections import Counter
+import re  # Regular expression library for splitting text into words
+
 
 app = Flask(__name__)
 
@@ -161,6 +163,30 @@ def char_operations():
     
     else:  # This else part ensures that there's always a return for GET requests
         return render_template('char_operations.html')
+
+@app.route('/word_operations', methods=['GET', 'POST'])
+def word_operations():
+    if request.method == 'POST':
+        s = request.form['string_s']
+        t = request.form['text_t']
+
+        # Splitting text T into words using regular expressions
+        words = re.findall(r'\b\w+\b', t)
+        word_count = len(words)
+
+        # Dictionary to hold lists of words starting with each character in S
+        starting_words = {char: [] for char in s}
+
+        # Populate the dictionary with words starting with each character
+        for word in words:
+            for char in s:
+                if word.lower().startswith(char.lower()):  # Case insensitive matching
+                    starting_words[char].append(word)
+
+        return render_template('word_operations.html', word_count=word_count, starting_words=starting_words)
+    
+    return render_template('word_operations.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)

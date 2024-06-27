@@ -1,0 +1,23 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Word Operations</h2>
+    <form method="POST">
+        <label for="string_s">String S (characters to match):</label>
+        <input type="text" id="string_s" name="string_s" required><br><br>
+        <label for="text_t">Text T (enter text to process):</label>
+        <textarea id="text_t" name="text_t" rows="5" cols="30" required></textarea><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if word_count is defined %}
+        <h3>Total Words Counted: {{ word_count }}</h3>
+        <h3>Words Starting with Each Character in S:</h3>
+        {% for char, words in starting_words.items() %}
+            <h4>Character: '{{ char }}'</h4>
+            <p>{{ words|join(', ') }}</p>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}
